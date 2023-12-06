@@ -9,6 +9,10 @@ python3.9 pip install -U pip
 echo "Installing project dependencies..."
 python3.9 -m pip install -r requirements.txt
 
+pip3 install db-sqlite3
+echo $PYTHONPATH
+export PYTHONPATH="/usr/local/lib/python3.7/site-packages:$PYTHONPATH"
+
 # Make migrations
 echo "Making migrations..."
 python3.9 manage.py makemigrations --noinput

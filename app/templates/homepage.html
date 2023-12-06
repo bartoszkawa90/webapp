@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content%}
+    <h1> <br> Homepage <br> </h1>
+    <h2>Upload Images</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ context.form.as_p }}
+        <button type="submit" name="Upload" value="Upload">Upload</button>
+    </form>
+
+    <h3><font size="4"> Current photo : {{ context.image_name }} </font></h3>
+    <ul>
+        {% for image in context.image %}
+            <li><img src="{{ image.image.url }}" alt="Uploaded Image" width="670" height="800" id="current_image"></li>
+        {% empty %}
+            <li>No images uploaded yet.</li>
+        {% endfor %}
+    </ul>
+    <br> <h3><font size="4"> Finding contours completed in: {{context.find_contours_time}} s</font></h3>
+    <h3><font size="4"> Cells classification completed in: {{context.classification_time}} s</font></h3>
+
+{% endblock content%}
+
+{% block params %}
+
+    <div class="content-section">
+        <h3> <br> <br> Parameters <br> </h3>
+              <p class='text-muted'>Below you should choose value for each parameter.
+                <ul class="list-group">
+                <form method="get">
+                    {% csrf_token %}
+                    Cells size for adaptive threshold:<br>
+                    <input value="31" class="search" type="text" name="threshold_range" placeholder="default value: 31">
+                    <pre> default value: 31 <br> current value: {{ context.cur_params.threshold_range }} </pre> </input>
+
+                    Threshold black background mask: <br>
+                    <input value="20" class="search" type="text" name="threshold_mask" placeholder="default value: 20">
+                    <pre> default value: 20 <br> current value: {{ context.cur_params.threshold_mask }} </pre> </input>
+
+                    Size of smallest cells: <br>
+                    <input value="7" class="search" type="text" name="cell_low_size" placeholder="default value: 7">
+                    <pre> default value: 7 <br> current value: {{ context.cur_params.cell_low_size }} </pre> </input>
+
+                    Size of largest cells: <br>
+                    <input value="500" class="search" type="text" name="cell_high_size" placeholder="default value: 500">
+                    <pre> default value: 500 <br> current value: {{ context.cur_params.cell_high_size }} </pre> </input>
+
+                    Value to filter too bright cells: <br>
+                    <input value="187" class="search" type="text" name="white_cells_boundry" placeholder="default value: 187">
+                    <pre> default value: 187 <br> current value: {{ context.cur_params.white_cells_boundry }} </pre> </input>
+
+{#                    Cells differences: <br>#}
+{#                    <input value="low" class="search" type="text" name="cells_differences" placeholder="default value: low">#}
+{#                    <pre> Specify a low or high value depending <br> on cell differences <br> default value: "low" <br> current value: {{ context.cells_differences }} </pre> </input>#}
+                    <br> <input type="submit" name="Submit parameters" value="Submit parameters">
+                </form>
+                <br> <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <button type="submit" name="Find contours" value="Find contours">Find contours</button>
+                </form>
+                <br> <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <button type="submit" name="Calculate" value="Calculate">Calculate</button>
+                </form> <br>
+{#                <div name="Kmeans result" rows="1" cols="30">#}
+{#                    Result of Kmeans classification:  {{ context.Kmeans }} %#}
+{#                </div> <br>#}
+                <div name="KNN result" rows="1" cols="30">
+                    Result of classification:  {{ context.KNN }} %
+                </div> <br>
+{#                <div name="CNN result" rows="1" cols="30">#}
+{#                    Result of CNN classification:  {{ context.CNN }} %#}
+{#                </div> <br>#}
+                </ul>
+              </p>
+    </div>
+
+{% endblock params %}

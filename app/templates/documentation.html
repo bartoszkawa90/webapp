@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content%}
+    <h1> <br> Documentation <br></h1>
+    <h2> Parameters:</h2>
+{#    <pre>#}
+    <div>
+        <h5>Cells size for adaptive threshold:</h5>
+                Default value 31. This parameter describes the size of cells. If cells
+                are bigger this parameter should have value closer to 41 or 51 and if cells are smaller
+                value should be closer to 21. 31 is the optimal value. User should manipulate this parameter
+                if algorithm can't detect some cells. <br> <br>
+
+        <h5>Threshold black background mask:</h5>
+                Default value 20. This parameter describes how bright are pixels in black background.
+                If background is really dark the value of this parameter should be around 20.
+                If background is a little brighter and applications founds some green contours in black background
+                you should set parameter value to 25 or 30. User should increase these parameter if there are
+                some lighter pixels on black part of background.<br> <br>
+
+        <h5>Size of smallest cells:</h5>
+                Default value 8. This parameter is approximation of smallest cell.
+                Every cell smaller than value of this parameter will not be
+                considered in counting cell's proportion. User should manipulate this parameter
+                to adjust minimal cell size to cells on the image.<br> <br>
+
+        <h5>Size of largest cells:</h5>
+                Default value 500. This parameter is approximation of largest cell.
+                Every cell bigger than value of this parameter will not be
+                considered in counting cell's proportion.User should manipulate this parameter
+                to adjust maximal cell size to cells on the image.<br> <br>
+
+        <h5>Value to filter too bright cells:</h5>
+                Default value 187. This value describes how bright can blue cells be.
+                Higher value means brighter cells. Algorithm may collect some parts
+                of white background and think these are blue cells, is that's the case
+                User should decrease value of this parameter to get rid of
+                too bright cells.<br> <br>
+
+        <h5>Cells differences:</h5>
+                Default value low. This value describes the differences between cells.
+                If there are two visible groups of cells ( blue cells are really blue and
+                black cells are really black not light-brown etc.) value of this parameter
+                should be 'high', in other case if some cells are light-brown, some dark-blue
+                and some blue or black the value of this parameter should be equal to 'low'
+                because there are small differences between cells from both groups.<br> <br>
+    </div>
+
+{% endblock content%}

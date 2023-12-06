@@ -13,8 +13,8 @@ from os import listdir
 from sys import version
 from functools import lru_cache
 
-# from scipy.signal import convolve2d
-# from scipy.ndimage import convolve
+from scipy.signal import convolve2d
+from scipy.ndimage import convolve
 
 
 
@@ -383,15 +383,15 @@ def Canny(grayImage=None, gaussSize=3, gaussSigma=1, mask_x=mask_x, mask_y=mask_
 
     if useGaussFilter:
         gaussKernel = gaussKernelGenerator(gaussSize, gaussSigma)
-        # gImage = convolve(convolve(grayImage, gaussKernel, mode='constant'), gaussKernel, mode='constant')
-        gImage = Convolution2D(Convolution2D(grayImage, gaussKernel, mode='same'), gaussKernel, mode='same')
+        gImage = convolve(convolve(grayImage, gaussKernel, mode='constant'), gaussKernel, mode='constant')
+        # gImage = Convolution2D(Convolution2D(grayImage, gaussKernel, mode='same'), gaussKernel, mode='same')
     else:
         gImage = grayImage
 
-    Gx = Convolution2D(gImage, mask_x, mode='same')
-    Gy = Convolution2D(gImage, mask_y, mode='same')
-    # Gx = convolve(gImage, mask_x, mode='constant')
-    # Gy = convolve(gImage, mask_y, mode='constant')
+    # Gx = Convolution2D(gImage, mask_x, mode='same')
+    # Gy = Convolution2D(gImage, mask_y, mode='same')
+    Gx = convolve(gImage, mask_x, mode='constant')
+    Gy = convolve(gImage, mask_y, mode='constant')
 
     ## gradient magnitude and angle(direction)
     GMag = (Gx**2 + Gy**2)**0.5 #np.sqrt(Gx**2 + Gy**2)

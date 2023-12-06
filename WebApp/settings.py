@@ -30,7 +30,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['kabartosz-inz-webapp.azurewebsites.net', 'localhost', '127.0.0.1',
 #                  '.vercel.app']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app']
 
 # Application definition
 
@@ -124,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles', 'static')
 # STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

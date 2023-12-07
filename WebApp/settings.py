@@ -30,7 +30,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['kabartosz-inz-webapp.azurewebsites.net', 'localhost', '127.0.0.1',
 #                  '.vercel.app']
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -123,14 +123,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 # STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = '/home/your_username/your_project_name/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

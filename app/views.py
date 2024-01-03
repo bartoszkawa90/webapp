@@ -77,9 +77,33 @@ def home(request, parameters=parameters):
                 except:
                     print("--- Something wrong original image ---")
             saved_image = imread('images/original_image.jpg')
+            img = preprocess(saved_image)
             # saved_image = imread(os.path.join('images/', saved_image_name))
 
             print(f"--- Context Parameters before segmentation: {context['cur_params']}")
+
+            # # split into 16 images
+            # hight, width = img.shape[:2]
+            # idx = 4
+            # hight, width = int(hight / idx), int(width / idx)
+            # image_parts = []
+            # for i in range(idx):
+            #     for j in range(idx):
+            #         image_parts.append(img[i * hight:(i + 1) * hight, j * width:(j + 1) * width])
+            #
+            # param_list = []
+            # for img in image_parts:
+            #     param_list.append(Parameters(img_path=img, thresholdRange=31, thresholdMaskValue=20, CannyGaussSize=3,
+            #                                  CannyGaussSigma=0.6,
+            #                                  CannyLowBoundry=0.1, CannyHighBoundry=10.0, CannyUseGauss=True,
+            #                                  CannyPerformNMS=False,
+            #                                  contourSizeLow=5, contourSizeHigh=500 / idx, whiteCellBoundry=187,
+            #                                  returnOriginalContours=False))
+            #
+            # with Pool(len(image_parts)) as p:
+            #     results = p.map(main, param_list)
+            # print(len(results))
+
             parameters = Parameters(img_path=saved_image, thresholdRange=context['cur_params']['threshold_range'],
                                     thresholdMaskValue=context['cur_params']['threshold_mask'],
                                     CannyGaussSize=3, CannyGaussSigma=0.6, CannyLowBoundry=0.1, CannyHighBoundry=10.0,
@@ -87,7 +111,11 @@ def home(request, parameters=parameters):
                                     contourSizeLow=context['cur_params']['cell_low_size'],
                                     contourSizeHigh=context['cur_params']['cell_high_size'],
                                     whiteCellBoundry=context['cur_params']['white_cells_boundry'])
+
             segmentation_results = main(parameters)
+            # num_of_cells = 0
+            # for res in results: num_of_cells += len(res)
+            # print(f"--- Segmentation completed ---\n--- Have {num_of_cells} cells after segmentation ---")
             print(f"--- Segmentation completed ---\n--- Have {len(segmentation_results.cells)} cells after segmentation ---")
             drawContours(segmentation_results.image, segmentation_results.contours, -1, (0, 255, 0), 3)
 
@@ -112,29 +140,13 @@ def home(request, parameters=parameters):
                                     load_reference_coordinates_path_black='app/static/KNN_black_reference_coordicates.json',
                                     load_reference_coordinates_path_blue='app/static/KNN_blue_reference_coordicates.json',
                                     working_state='load data')
-            #
-            # # Unsupervised methods
-            # # We use Kmeans two times it gives best results
-            # blackKmeans, blueKmeans, centroids = kMeans(num_of_clusters=2, cells=segmentation_results.cells)
-
-            ## IF THERE ARE VISIBLE DIFFERENCES BETWEEN TWO GROUPS OF CELLS USE KMEANS ONLY ONES
-            # if context['cells_differences'] == 'low':
-            #     kblack, kblue, cent = kMeans(num_of_clusters=2, cells=blueKmeans)
-            #     blueKmeans = kblue
-            #     blackKmeans = blackKmeans + kblack
 
             print(f" KNN :: Black {len(blackKNN)} and blue {len(blueKNN)}  /n Finale result of algorithm is  ::  "
                   f"{len(blackKNN)/(len(blueKNN) + len(blackKNN))*100} % \n")
-            # print(f" CNN :: Black {len(blackCNN)} and blue {len(blueCNN)}  /n Finale result of algorithm is"
-            #       f"  ::  {len(blackCNN)/(len(blueCNN) + len(blackCNN))*100} % \n")
-            # print(f" Kmeans :: Black {len(blackKmeans)} and blue {len(blueKmeans)}  /n Finale result of algorithm is  ::  "
-            #       f"{len(blackKmeans)/(len(blueKmeans) + len(blackKmeans))*100} % \n")
 
             print("--- %s seconds ---" % (time() - class_start_time), ' time after algorithm ')
 
-            # context['Kmeans'] = round(len(blackKmeans)/(len(blueKmeans) + len(blackKmeans))*100, 3)
             context['KNN'] = round(len(blackKNN)/(len(blueKNN) + len(blackKNN))*100, 3)
-            # context['CNN'] = round(len(blackCNN)/(len(blueCNN) + len(blackCNN))*100, 3)
             context['classification_time'] = round((time() - class_start_time), 3)
         except:
             print("Something went wrong  while calculating ( contours might have not been found ")

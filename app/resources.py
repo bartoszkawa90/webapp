@@ -1,5 +1,4 @@
 ## IMPORTS
-# import skimage.morphology
 from .variables import *
 from time import time
 from cv2 import imread, imwrite, imshow, namedWindow, resize, resizeWindow, waitKey, destroyWindow, threshold, morphologyEx, INTER_AREA
@@ -15,6 +14,7 @@ from functools import lru_cache
 
 from scipy.signal import convolve2d
 from scipy.ndimage import convolve
+from multiprocessing import Pool
 
 
 
@@ -525,7 +525,7 @@ def main(params):
 
     # preprocessing
     # img = preprocess(img, xmin=500, xmax=1000, ymin=500, ymax=1000)
-    img = preprocess(img)
+    # img = preprocess(img)
     print(f" Image after preprocessing {img.shape}")
 
     # get blue value
@@ -603,78 +603,6 @@ def save_cells(cells, coordinates, dir='Cells', name_addition=''):
 
 def get_coordinates_from_filename(path):
     return tuple([int(cor[0]) for cor in [ele.split(' ') for ele in path.split('_')][1:5]])
-
-
-# def test2():
-#     print('Hello \n')
-#     print(sys.version)
-#     return 2
-# test2()
-#
-#
-# test()
-
-
-## test LoG / Canny  -----------------------------------------------------------
-
-# img = imread('spodnie.jpeg')
-# img = imread('Wycinki/resized_wycinek_4_67nieb_82czar.jpg')
-# img = imread('zdj_z_arykułu.png')
-
-# gray = cvtColor(img, COLOR_BGRA2GRAY)
-# Canny(gray)
-# plot_photo("From Canny", LoG(gray))
-# plot_photo("From Canny", Canny(gray, lowBoundry=1.0, highBoundry=10.0))
-# plot_photo("cv2 Canny", Canny(gray, 100, 200, 10, L2gradient=True))
-
-# edge = Canny(gray, 1, 10)
-# contours, hierarchy = findContours(edge, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE)
-# conts = delete_incorrect_contours(contours)
-# plot_photo("From Canny", edge)
-# drawContours(img, conts, -1, (0, 255, 0), 3)
-# plot_photo("From Canny", img)
-
-
-# test Canny 2
-# img = imread('Wycinki/resized_wycinek_4_67nieb_82czar.jpg)
-# gray = cvtColor(img, COLOR_BGRA2GRAY)
-# plot_photo("From Canny", Canny(gray))
-
-
-# ## test COnvolution
-# mask_x = np.zeros((3, 1))
-# mask_x[0] = -1
-# mask_x[2] = 1
-# mask_y = mask_x.T
-# printArr(mask_x, mask_y)
-
-# # non square kernel
-# print("mine   \n", Convolution2D(exampleArray, mask_y, mode="same"))
-# # print("scipy.signal  \n", sig.convolve2d(exampleArray, mask_y, mode='same').astype(np.uint8))
-# # print("scipy.ndimage   \n", scipy.ndimage.convolve(exampleArray, mask_y, mode="constant"))
-# # print("cv2 filter \n", filter2D(exampleArray, -1, mask_x))
-# # print("corelation \n ", scipy.ndimage.correlate(exampleArray, mask_x))
-# # print("\n")
-
-# # square input image
-# print("mine   \n", Convolution2D(MALAexample, mask_y, mode="same"))
-# # print("scipy.signal  \n", sig.convolve2d(MALAexample, mask_y, mode='same').astype(np.uint8))
-# # print("scipy.ndimage   \n", scipy.ndimage.convolve(MALAexample, mask_y, mode="constant"))
-# # print("cv2 filter \n", filter2D(MALAexample, -1, mask_x))
-# # print("\n")
-
-# # non square input image
-# print("mine   \n", Convolution2D(exampleArray, exampleKernel, mode="same"))
-# # print("scipy.signal  \n", sig.convolve2d(exampleArray, exampleKernel, mode='same').astype(np.uint8))
-# # print("scipy.ndimage   \n", scipy.ndimage.convolve(exampleArray, exampleKernel, mode="constant"))
-# # print("\n")
-
-
-
-# print(scipy.ndimage.filters.convolve(MALAexample, gauss))   # to samo co wyzej
-
-
-
 
 
 

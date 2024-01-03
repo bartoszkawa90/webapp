@@ -3,4 +3,4 @@ scipy
 Django==4.2.7
 numpy==1.26.2
 opencv-python==4.8.0.76
-Pillow
+gunicorn
